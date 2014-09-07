@@ -1,6 +1,9 @@
 module Churro.Parser
     ( parseChurro
+      
     ) where
+
+import Churro.Operations
 
 import Text.Parsec
 import Text.Parsec.ByteString
@@ -18,24 +21,6 @@ import qualified Data.Sequence as S
 data Facing =
       L
     | R
-    deriving (Show, Eq)
-
-{-
-    Churro operations
-    Bools specifcy whether to peek (where appropriate)
--}
-data ChurroOp =
-      Push Int
-    | Pop
-    | Add Bool
-    | Sub Bool
-    | Loop [ChurroOp] Bool Bool
-    | Store Bool
-    | Load Bool
-    | PrintInt Bool
-    | PrintChar Bool
-    | Read
-    | Exit
     deriving (Show, Eq)
 
 {-
