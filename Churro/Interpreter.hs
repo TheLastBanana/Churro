@@ -181,7 +181,7 @@ interpret (x:xs) =
     -- Execute operations
     do{ ret <- execOp x
       ; (stack, _) <- get
-      ; liftIO $ putStrLn $ show stack
+      ; liftIO $ putStrLn $ (show x) ++ ": " ++ (show stack)
       ; case ret of
             Continue -> interpret xs
             _        -> return ret
