@@ -242,6 +242,3 @@ churroCode =
 -}
 parseChurro :: String -> Either ParseError [ChurroOp]
 parseChurro input = runParser churroCode [] "churro" input
-
-main :: IO ()
-main = putStrLn $ show $ parseChurro "{o}=} {==={o} {o}==} {===={*} {o}==}"
