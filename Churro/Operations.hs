@@ -8,7 +8,7 @@ module Churro.Operations
 -}
 data ChurroOp =
       Push Int
-    | Pop
+    | Pop Bool
     | Add Bool
     | Sub Bool
     | Loop [ChurroOp] Bool Bool

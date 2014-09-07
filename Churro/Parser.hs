@@ -169,7 +169,7 @@ decodeChurro =
             
             -- Operation
             R -> case len of
-                0 -> do{ return Pop }
+                0 -> do{ return $ Pop filled }
                 1 -> do{ return $ Add filled }
                 2 -> do{ return $ Sub filled }
                 
