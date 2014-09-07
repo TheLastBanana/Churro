@@ -1,4 +1,7 @@
-import Churro.Parser
+import Churro.Interpreter
 
 main :: IO ()
-main = putStrLn $ show $ parseChurro "{o}=} {==={o} {o}==} {===={*} {o}==}"
+main =
+    do{ let code = "{o}===} {==={*} {*}=} {={o} {===={*}"
+      ; interpretParse code
+      }
