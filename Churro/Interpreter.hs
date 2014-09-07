@@ -5,14 +5,23 @@ module Churro.Interpreter
 import Churro.Operations
 import Churro.Parser
 import Control.Monad.State
-import qualified Data.Vector as V
+import qualified Data.Vector.Unboxed as V
+
+{---------------------------------- CONSTANTS ---------------------------------}
+
+minIndex = 0
+maxIndex = 9999
+
+-- Check if an array value is in bounds
+inBounds :: Int -> Bool
+inBounds x = (x >= minIndex) && (x <= maxIndex)
 
 {--------------------------------- TYPES/DATA ---------------------------------}
 
 {-
     Churro state of (stack, data array), producing a string
 -}
-type ChurroState a = StateT ([Int], V.Vector Integer) IO a
+type ChurroState a = StateT ([Int], V.Vector Int) IO a
 
 {-
     Return type for churro parsing
@@ -32,6 +41,17 @@ stackError opName =
     do{ liftIO $ putStrLn ("Stack error: not enough values for "
                            ++ opName
                            ++ " operation")
+      ; return Abort
+      }
+
+{-
+    Print a data error
+-}
+dataError :: Int -> ChurroState ChurroReturn
+dataError location =
+    do{ liftIO $ putStrLn ("Data error: memory location "
+                           ++ (show location)
+                           ++ " is out of bounds")
       ; return Abort
       }
 
@@ -158,6 +178,47 @@ endLoop peek =
             
             _    -> stackError "end loop"
       }
+      
+{-
+    Pop/peek A, B; store B in memory location A
+-}
+store :: Bool -> ChurroState ChurroReturn
+store peek =
+    do{ (stack, vec) <- get
+      ; case stack of
+            a:b:xs ->
+                if inBounds b
+                then
+                    do{ let newStack = if peek then stack else xs
+                      ; let newVec = vec V.// [(a, b)]
+                      ; put (newStack, newVec)
+                      ; return Continue
+                      }
+                else
+                    dataError b
+            
+            _    -> stackError "store"
+      }
+      
+{-
+    Pop/peek A; push the value in memory location A
+-}
+load :: Bool -> ChurroState ChurroReturn
+load peek =
+    do{ (stack, vec) <- get
+      ; case stack of
+            a:xs ->
+                if inBounds a
+                then
+                    do{ let newStack = if peek then stack else xs
+                      ; put ((vec V.! a):newStack, vec)
+                      ; return Continue
+                      }
+                else
+                    dataError a
+            
+            _    -> stackError "store"
+      }
 
 {-------------------------------- INTERPRETER ---------------------------------}
 
@@ -172,6 +233,8 @@ execOp op =
             Add peek -> add peek
             Sub peek -> sub peek
             Loop ops peekA peekB -> startLoop ops peekA peekB
+            Store peek -> store peek
+            Load peek -> load peek
       }
 {-
     Interpret Churro code
@@ -197,7 +260,7 @@ interpretParse :: String -> IO ()
 interpretParse input =
     do{ let ops = parseChurro input
       ; case ops of
-            Right ops -> evalStateT (interpret_ ops) ([], V.replicate 9999 0)
+            Right ops -> evalStateT (interpret_ ops) ([], V.replicate maxIndex 0)
             Left error -> putStrLn $ "Parse error: " ++ (show error)
       }
   where
