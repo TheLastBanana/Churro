@@ -2,6 +2,7 @@ module Churro.Interpreter
     ( interpretParse
     ) where
 
+import Data.Char
 import Churro.Operations
 import Churro.Parser
 import Control.Monad.State
@@ -217,7 +218,39 @@ load peek =
                 else
                     dataError a
             
-            _    -> stackError "store"
+            _    -> stackError "load"
+      }
+
+{-
+    Pop/peek A; print A as an integer
+-}
+printInt :: Bool -> ChurroState ChurroReturn
+printInt peek =
+    do{ (stack, vec) <- get
+      ; case stack of
+            a:xs -> do{ let newStack = if peek then stack else xs
+                      ; put (newStack, vec)
+                      ; liftIO $ print a
+                      ; return Continue
+                      }
+            
+            _    -> stackError "print integer"
+      }
+
+{-
+    Pop/peek A; print A as a character
+-}
+printChar :: Bool -> ChurroState ChurroReturn
+printChar peek =
+    do{ (stack, vec) <- get
+      ; case stack of
+            a:xs -> do{ let newStack = if peek then stack else xs
+                      ; put (newStack, vec)
+                      ; liftIO $ putChar (chr a)
+                      ; return Continue
+                      }
+            
+            _    -> stackError "print character"
       }
 
 {-------------------------------- INTERPRETER ---------------------------------}
@@ -235,6 +268,8 @@ execOp op =
             Loop ops peekA peekB -> startLoop ops peekA peekB
             Store peek -> store peek
             Load peek -> load peek
+            PrintInt peek -> printInt peek
+            PrintChar peek -> printChar peek
       }
 {-
     Interpret Churro code
