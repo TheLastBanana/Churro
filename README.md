@@ -55,8 +55,8 @@ The functions are:
 | Churro            | Operation                                                        |
 | ----------------- | ---------------------------------------------------------------- |
 | `{{o}`            | pop A; discard A                                                 |
-| `{={o}`           | pop A, B; push (A + B)                                           |
-| `{=={o}`          | pop A, B; push (A - B)                                           |
+| `{={o}`           | pop A, B; push (B + A)                                           |
+| `{=={o}`          | pop A, B; push (B - A)                                           |
 | `{==={o}`         | pop A; if A = 0, jump to churro after next occurence of {===={o} |
 | `{===={o}`        | pop A; if A != 0, jump to churro after last occurence of {==={o} |
 | `{====={o}`       | pop A, B; store B in memory location A                           |
