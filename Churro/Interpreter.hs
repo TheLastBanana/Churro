@@ -1,5 +1,6 @@
 module Churro.Interpreter
-    ( interpretParse
+    ( interpretAndParse,
+      interpret
     ) where
 
 import Data.Char
@@ -311,8 +312,8 @@ interpret _ =
 {-
     Parse and interpret Churro code
 -}
-interpretParse :: String -> String -> IO ()
-interpretParse input name =
+interpretAndParse :: String -> String -> IO ()
+interpretAndParse input name =
     do{ let ops = parseChurro input name
       ; case ops of
             Right ops -> evalStateT (interpret_ ops) ([], V.replicate maxIndex 0)

@@ -10,5 +10,5 @@ main =
                    "{===={*} {{o}" ++
                    "{o}=====} {={o} {========{o}" ++
                    "boogala boogala"
-      ; interpretParse code ""
+      ; interpretAndParse code ""
       }
