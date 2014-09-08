@@ -1,22 +1,19 @@
-Churro
-======
+# Churro
+
 Churro is a stack-based interpreted programming language in which the code is
 entirely made up of churros.
 
-Design Principles
------------------
+## Design Principles
 * Churros are magical and should therefore be the only syntax element.
 * The language must include mutable state in order to irk Calvin Beck.
 
-Language Concepts
------------------
+## Language Concepts
 Churro operates on two structures: a stack and an array. Operations can only be
 directly performed on data in the stack. The array is used to store data which
 may need to be recalled later. It is zero-indexed and contains 9999 elements,
 all of which are initialized to 0.
 
-Syntax
-------
+## Syntax
 The only syntax elements are churros. A churro might look like this:
 `{o}=====}`
 
@@ -29,8 +26,7 @@ There are three important components to a churro:
 A `{` always indicates the beginning of a churro. Any other characters between
 churros are ignored.
 
-Literals
---------
+### Literals
 Left-facing churros, also known as "literal churros," represent data. When a
 literal churro is encountered, its value is pushed to the top of the stack.
 
@@ -48,8 +44,7 @@ this churro stands for -9:
 and this tiny one stands for 0:
 `{o}}`
 
-Operators
----------
+### Operators
 Right-facing churros, also known as "operator churros," are used to manipulate
 data. They operate on values in the stack.
 
@@ -72,8 +67,7 @@ The functions are:
 Filled operator churros have the same behaviour as unfilled churros, but instead
 of popping values on the stack, they peek them.
 
-Style
------
+## Style
 Churros longer than a length of 10 have very little structural integrity, and so
 for the sake of realism, they should be avoided. Adding two smaller churros
 together is an acceptable solution.
@@ -88,11 +82,14 @@ so it is acceptable to distribute a "dirty" version of the code with comments
 and extra whitespace so long as a "pure" version with minimal whitespace is also
 included.
 
-Installation
-------------
+## Installation
 Assuming you have Cabal installed, simply execute
+
 `cabal install`
+
 in this directory. You can then run
+
 `churro <filename>.ch`
+
 to execute a Churro program, such as one of the ones contained in the Samples
 directory.
