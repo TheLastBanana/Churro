@@ -233,5 +233,5 @@ churroCode =
 {-
     Run the churro parser
 -}
-parseChurro :: String -> Either ParseError [ChurroOp]
-parseChurro input = runParser churroCode [] "churro" input
+parseChurro :: String -> String -> Either ParseError [ChurroOp]
+parseChurro input name = runParser churroCode [] name input

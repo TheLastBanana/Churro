@@ -311,9 +311,9 @@ interpret _ =
 {-
     Parse and interpret Churro code
 -}
-interpretParse :: String -> IO ()
-interpretParse input =
-    do{ let ops = parseChurro input
+interpretParse :: String -> String -> IO ()
+interpretParse input name =
+    do{ let ops = parseChurro input name
       ; case ops of
             Right ops -> evalStateT (interpret_ ops) ([], V.replicate maxIndex 0)
             Left error -> putStrLn $ "Parse error: " ++ (show error)
