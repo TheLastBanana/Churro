@@ -139,7 +139,7 @@ startLoop ops peekA peekB =
                                      do{ ret <- endLoop peekB
                                        ; case ret of
                                              -- No error; continue loop
-                                             Continue -> startLoop ops peekA peekB
+                                             Continue -> startLoop ops True peekB
                                         
                                              -- No error; stop loop
                                              Complete -> return Continue
