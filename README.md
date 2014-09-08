@@ -71,6 +71,3 @@ The functions are:
 
 Filled operator churros have the same behaviour as unfilled churros, but instead
 of popping values on the stack, they peek them.
-
-Finally, if an empty line is encountered, the program will exit, as there is no
-reason to exist without churros.
