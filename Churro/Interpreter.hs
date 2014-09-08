@@ -143,11 +143,11 @@ startLoop ops peekA peekB =
                                              -- No error; stop loop
                                              Complete -> return Continue
                                             
-                                             -- Error; stop everything
+                                             -- Stop everything
                                              Abort -> return Abort
                                         }
                                  
-                                 -- Error
+                                 -- Stop everything
                                  Abort -> return Abort
                                  
                                  -- This shouldn't happen
