@@ -39,3 +39,5 @@ Icon
 *.o
 *.exe
 *.save0
+
+dist/*
