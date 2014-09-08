@@ -97,6 +97,7 @@ lChurro =
       ; whiteSpace
       ; return (filled, len)
       }
+    <?> "left-facing churro"
 
 {-
     Parse a right-facing (literal) churro
@@ -110,6 +111,7 @@ rChurro =
       ; whiteSpace
       ; return (filled, len)
       }
+    <?> "right-facing churro"
 
 {-
     Parse any churro
@@ -126,6 +128,7 @@ anyChurro =
     do{ (filled, len) <- try rChurro;
       ; return (R, filled, len)
       }
+    <?> "churro"
 
 {-
     Parse a specific type of churro
