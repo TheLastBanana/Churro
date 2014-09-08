@@ -23,10 +23,10 @@ The only syntax elements are churros. A churro might look like this:
 There are three important components to a churro:
 
 1. Its orientation -- either left or right
-2. Its filling -- either 'o' (unfilled) or '*' (filled)
+2. Its filling -- either `o` (unfilled) or `*` (filled)
 3. Its tail length
 
-A '{' always indicates the beginning of a churro. Any other characters between
+A `{` always indicates the beginning of a churro. Any other characters between
 churros are ignored.
 
 Literals
@@ -34,10 +34,10 @@ Literals
 Left-facing churros, also known as "literal churros," represent data. When a
 literal churro is encountered, its value is pushed to the top of the stack.
 
-The tail length of the churro -- that is, the number of "=" signs -- is its
+The tail length of the churro -- that is, the number of `=` symbols -- is its
 numerical value. Sign is indicated by a churro's filling, with unfilled churros
-(o) being positive and filled churros (*) being negative. All data is stored as
-32-bit integers.
+(`o`) being positive and filled churros (`*`) being negative. All data is stored
+as integers.
 
 For example, this churro stands for 3:
 `{o}===}`
