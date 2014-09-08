@@ -72,6 +72,22 @@ The functions are:
 Filled operator churros have the same behaviour as unfilled churros, but instead
 of popping values on the stack, they peek them.
 
+Style
+-----
+Churros longer than a length of 10 have very little structural integrity, and so
+for the sake of realism, they should be avoided. Adding two smaller churros
+together is an acceptable solution.
+
+Churros are also generally not stacked directly end-to-end, so leave a single
+space between each churro. To avoid churros being cut in half (the horror!) by
+console displays, keep lines below 80 characters in length.
+
+In order to maintain the purity of the program's churro makeup, minimal (or no)
+comments are recommended. Of course, this may make code more difficult to read,
+so it is acceptable to distribute a "dirty" version of the code with comments
+and extra whitespace so long as a "pure" version with minimal whitespace is also
+included.
+
 Installation
 ------------
 Assuming you have Cabal installed, simply execute
