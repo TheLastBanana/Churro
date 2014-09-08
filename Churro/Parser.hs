@@ -51,9 +51,9 @@ manyTillEnd p end = scan
         do{ x <- p; (xs, endr) <- scan; return (x:xs, endr) }
 
 {-
-    Definition of whitespace
+    Definition of ignore characters
 -}
-whiteSpace = many $ oneOf " \n"
+ignore = many $ noneOf ['{']
     
 {-
     Parse a churro filling
@@ -94,7 +94,6 @@ lChurro =
     do{ filled <- churroHead
       ; len <- churroTail
       ; char '}'
-      ; whiteSpace
       ; return (filled, len)
       }
     <?> "left-facing churro"
@@ -108,7 +107,6 @@ rChurro =
     do{ char '{'
       ; len <- churroTail
       ; filled <- churroHead
-      ; whiteSpace
       ; return (filled, len)
       }
     <?> "right-facing churro"
@@ -118,17 +116,21 @@ rChurro =
     Return (facing, filled, tail length)
 -}
 anyChurro :: ChurroParser (Facing, Bool, Int)
-anyChurro = 
-    -- Facing left
-    do{ (filled, len) <- try lChurro;
-      ; return (L, filled, len)
+anyChurro =
+    do{ ret <- 
+            -- Facing left
+            do{ (filled, len) <- try lChurro;
+              ; return (L, filled, len)
+              }
+            <|>
+            -- Facing right
+            do{ (filled, len) <- try rChurro;
+              ; return (R, filled, len)
+              }
+            <?> "churro"
+      ; ignore
+      ; return ret
       }
-    <|>
-    -- Facing right
-    do{ (filled, len) <- try rChurro;
-      ; return (R, filled, len)
-      }
-    <?> "churro"
 
 {-
     Parse a specific type of churro
@@ -204,15 +206,18 @@ decodeChurro =
 -}
 churroCode :: ChurroParser [ChurroOp]
 churroCode =
-    do{ whiteSpace
+    do{ ignore
       -- Find churros on this line
-      ; many $ do
+      ; manyTill (do
+          -- Churros
           { state <- getState
           
           -- Decode churro and add to operation list
           ; op <- decodeChurro
           ; setState $ op:state
-          }
+          })
+          
+          (eof)
       ; state <- getState
       ; return $ reverse state
       }

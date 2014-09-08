@@ -26,6 +26,9 @@ There are three important components to a churro:
 2. Its filling -- either 'o' (unfilled) or '*' (filled)
 3. Its tail length
 
+A '{' always indicates the beginning of a churro. Any other characters between
+churros are ignored.
+
 Literals
 --------
 Left-facing churros, also known as "literal churros," represent data. When a
