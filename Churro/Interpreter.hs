@@ -263,6 +263,14 @@ read =
       ; put ((ord c):stack, vec)
       ; return Continue
       }
+      
+{-
+    Exit the program
+-}
+exit :: ChurroState ChurroReturn
+exit =
+    do{ return Abort
+      }
 
 {-------------------------------- INTERPRETER ---------------------------------}
 
@@ -282,6 +290,7 @@ execOp op =
             PrintInt peek -> printInt peek
             PrintChar peek -> printChar peek
             Read -> Churro.Interpreter.read
+            Exit -> exit
       }
 {-
     Interpret Churro code
