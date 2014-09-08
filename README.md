@@ -71,3 +71,12 @@ The functions are:
 
 Filled operator churros have the same behaviour as unfilled churros, but instead
 of popping values on the stack, they peek them.
+
+Installation
+------------
+Assuming you have Cabal installed, simply execute
+`cabal install`
+in this directory. You can then run
+`churro <filename>.ch`
+to execute a Churro program, such as one of the ones contained in the Samples
+directory.
