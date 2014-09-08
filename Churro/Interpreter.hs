@@ -253,6 +253,17 @@ printChar peek =
             _    -> stackError "print character"
       }
 
+{-
+    Read a single character from stdin and push it to the stack
+-}
+read :: ChurroState ChurroReturn
+read =
+    do{ (stack, vec) <- get
+      ; c <- liftIO $ getChar
+      ; put ((ord c):stack, vec)
+      ; return Continue
+      }
+
 {-------------------------------- INTERPRETER ---------------------------------}
 
 {-
@@ -270,6 +281,7 @@ execOp op =
             Load peek -> load peek
             PrintInt peek -> printInt peek
             PrintChar peek -> printChar peek
+            Read -> Churro.Interpreter.read
       }
 {-
     Interpret Churro code
