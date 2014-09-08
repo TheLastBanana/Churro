@@ -8,8 +8,13 @@ import System.IO
 main :: IO ()
 main =
     do{ args <- getArgs
-      ; let file = head args
-      ; handle <- openFile file ReadMode
-      ; code <- hGetContents handle
-      ; interpretAndParse code file
+      ; case args of
+            x:xs ->
+                do{ handle <- openFile x ReadMode
+                  ; code <- hGetContents handle
+                  ; interpretAndParse code x
+                  }
+            
+            _    ->
+                do{ putStrLn "Usage: churro <filename>.ch" }
       }
