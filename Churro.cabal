@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                Churro
-version:             0.1.0.0
+version:             0.9.0.0
 synopsis:            An interpreter for Churro, a programming language made up entirely of churros.
 -- description:         
 homepage:            https://webdocs.cs.ualberta.ca/~colp/churro
