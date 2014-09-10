@@ -11,9 +11,7 @@ entirely made up of churros.
 Churro operates on two structures: a stack and an array. Operations can only be
 directly performed on data in the stack. The array is used to store data which
 may need to be recalled later. The array is zero-index and all elements should
-be initialized to zero, though its exact size is implementation-defined. This
-interpreter uses a dictionary representation, so the array size is theoretically
-infinite.
+be initialized to zero, though its exact size is implementation-defined.
 
 ## Syntax
 The only syntax elements are churros. A churro might look like this:
@@ -83,6 +81,13 @@ comments are recommended. Of course, this may make code more difficult to read,
 so it is acceptable to distribute a "dirty" version of the code with comments
 and extra whitespace so long as a "pure" version with minimal whitespace is also
 included.
+
+# Interpreter
+
+## Implementation
+This interpreter uses the Haskell Integer data type for all values, and the
+array is implemented as a dictionary. As such, there is theoretically no bound
+on either the amount or magnitude of data stored.
 
 ## Installation
 Assuming you have Cabal installed, simply execute
