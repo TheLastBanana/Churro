@@ -10,8 +10,10 @@ entirely made up of churros.
 ## Language Concepts
 Churro operates on two structures: a stack and an array. Operations can only be
 directly performed on data in the stack. The array is used to store data which
-may need to be recalled later. It is zero-indexed and contains 9999 elements,
-all of which are initialized to 0.
+may need to be recalled later. The array is zero-index and all elements should
+be initialized to zero, though its exact size is implementation-defined. This
+interpreter uses a dictionary representation, so the array size is theoretically
+infinite.
 
 ## Syntax
 The only syntax elements are churros. A churro might look like this:

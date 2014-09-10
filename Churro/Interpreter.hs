@@ -7,23 +7,22 @@ import Data.Char
 import Churro.Operations
 import Churro.Parser
 import Control.Monad.State
-import qualified Data.Vector.Unboxed as V
+import qualified Data.Map.Lazy as Map
 
 {---------------------------------- CONSTANTS ---------------------------------}
 
 minIndex = 0
-maxIndex = 9999
 
 -- Check if an array value is in bounds
 inBounds :: Int -> Bool
-inBounds x = (x >= minIndex) && (x <= maxIndex)
+inBounds x = (x >= minIndex)
 
 {--------------------------------- TYPES/DATA ---------------------------------}
 
 {-
     Churro state of (stack, data array), producing a string
 -}
-type ChurroState a = StateT ([Int], V.Vector Int) IO a
+type ChurroState a = StateT ([Int], Map.Map Int Int) IO a
 
 {-
     Return type for churro parsing
@@ -62,8 +61,8 @@ dataError location =
 -}
 push :: Int -> ChurroState ChurroReturn
 push n =
-    do{ (stack, vec) <- get
-      ; put (n:stack, vec)
+    do{ (stack, array) <- get
+      ; put (n:stack, array)
       ; return Continue
       }
 
@@ -72,11 +71,11 @@ push n =
 -}
 pop :: Bool -> ChurroState ChurroReturn
 pop peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs ->
                 do{ let newStack = if peek then stack else xs
-                  ; put (newStack, vec)
+                  ; put (newStack, array)
                   ; return Continue
                   }
             
@@ -88,11 +87,11 @@ pop peek =
 -}
 add :: Bool -> ChurroState ChurroReturn
 add peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:b:xs ->
                 do{ let newStack = if peek then stack else xs
-                  ; put ((b + a):newStack, vec)
+                  ; put ((b + a):newStack, array)
                   ; return Continue
                   }
             
@@ -104,11 +103,11 @@ add peek =
 -}
 sub :: Bool -> ChurroState ChurroReturn
 sub peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:b:xs ->
                 do{ let newStack = if peek then stack else xs
-                  ; put ((b - a):newStack, vec)
+                  ; put ((b - a):newStack, array)
                   ; return Continue
                   }
             
@@ -120,12 +119,12 @@ sub peek =
 -}
 startLoop :: [ChurroOp] -> Bool -> Bool -> ChurroState ChurroReturn
 startLoop ops peekA peekB =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs ->
                 -- Pop from stack
                 do{ let newStack = if peekA then stack else xs
-                  ; put (newStack, vec)
+                  ; put (newStack, array)
                   
                   ; if a == 0
                     -- Jump to end of loop
@@ -168,11 +167,11 @@ startLoop ops peekA peekB =
 -}
 endLoop :: Bool -> ChurroState ChurroReturn
 endLoop peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs ->
                 do{ let newStack = if peek then stack else xs
-                  ; put (newStack, vec)
+                  ; put (newStack, array)
                   ; if a == 0
                     then return Complete
                     else return Continue
@@ -186,14 +185,14 @@ endLoop peek =
 -}
 store :: Bool -> ChurroState ChurroReturn
 store peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:b:xs ->
                 if inBounds b
                 then
                     do{ let newStack = if peek then stack else xs
-                      ; let newVec = vec V.// [(a, b)]
-                      ; put (newStack, newVec)
+                      ; let newArray = Map.insert a b array
+                      ; put (newStack, newArray)
                       ; return Continue
                       }
                 else
@@ -207,13 +206,16 @@ store peek =
 -}
 load :: Bool -> ChurroState ChurroReturn
 load peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs ->
                 if inBounds a
                 then
                     do{ let newStack = if peek then stack else xs
-                      ; put ((vec V.! a):newStack, vec)
+                            loadVal = if (Map.member a array)
+                                      then array Map.! a
+                                      else 0
+                      ; put (loadVal:newStack, array)
                       ; return Continue
                       }
                 else
@@ -227,10 +229,10 @@ load peek =
 -}
 printInt :: Bool -> ChurroState ChurroReturn
 printInt peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs -> do{ let newStack = if peek then stack else xs
-                      ; put (newStack, vec)
+                      ; put (newStack, array)
                       ; liftIO $ print a
                       ; return Continue
                       }
@@ -243,10 +245,10 @@ printInt peek =
 -}
 printChar :: Bool -> ChurroState ChurroReturn
 printChar peek =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; case stack of
             a:xs -> do{ let newStack = if peek then stack else xs
-                      ; put (newStack, vec)
+                      ; put (newStack, array)
                       ; liftIO $ putChar (chr a)
                       ; return Continue
                       }
@@ -259,9 +261,9 @@ printChar peek =
 -}
 read :: ChurroState ChurroReturn
 read =
-    do{ (stack, vec) <- get
+    do{ (stack, array) <- get
       ; c <- liftIO $ getChar
-      ; put ((ord c):stack, vec)
+      ; put ((ord c):stack, array)
       ; return Continue
       }
       
@@ -316,7 +318,7 @@ interpretAndParse :: String -> String -> IO ()
 interpretAndParse input name =
     do{ let ops = parseChurro input name
       ; case ops of
-            Right ops -> evalStateT (interpret_ ops) ([], V.replicate maxIndex 0)
+            Right ops -> evalStateT (interpret_ ops) ([], Map.empty)
             Left error -> putStrLn $ "Parse error: " ++ (show error)
       }
   where
