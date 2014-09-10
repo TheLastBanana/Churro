@@ -80,16 +80,16 @@ churroHead =
 {-
     Parse a churro's tail
 -}
-churroTail :: ChurroParser Int
+churroTail :: ChurroParser Integer
 churroTail =
     do{ tailStr <- many (char '=')
-      ; return $ length tailStr
+      ; return $ toInteger $ length tailStr
       }
 
 {-
     Parse a left-facing (literal) churro
 -}
-lChurro :: ChurroParser (Bool, Int)
+lChurro :: ChurroParser (Bool, Integer)
 lChurro = 
     do{ filled <- churroHead
       ; len <- churroTail
@@ -102,7 +102,7 @@ lChurro =
     Parse a right-facing (literal) churro
     Return (filled, tail length)
 -}
-rChurro :: ChurroParser (Bool, Int)
+rChurro :: ChurroParser (Bool, Integer)
 rChurro = 
     do{ char '{'
       ; len <- churroTail
@@ -115,7 +115,7 @@ rChurro =
     Parse any churro
     Return (facing, filled, tail length)
 -}
-anyChurro :: ChurroParser (Facing, Bool, Int)
+anyChurro :: ChurroParser (Facing, Bool, Integer)
 anyChurro =
     do{ ret <- 
             -- Facing left
@@ -138,8 +138,8 @@ anyChurro =
     
     Return (facing, filled, tail length)
 -}
-exactChurro :: Maybe Facing -> Maybe Bool -> Maybe Int
-               -> ChurroParser (Facing, Bool, Int)
+exactChurro :: Maybe Facing -> Maybe Bool -> Maybe Integer
+               -> ChurroParser (Facing, Bool, Integer)
 exactChurro facing filled len = 
         -- Get a churro
     do{ (pFacing, pFilled, pLen) <- anyChurro

@@ -14,7 +14,7 @@ import qualified Data.Map.Lazy as Map
 minIndex = 0
 
 -- Check if an array value is in bounds
-inBounds :: Int -> Bool
+inBounds :: Integer -> Bool
 inBounds x = (x >= minIndex)
 
 {--------------------------------- TYPES/DATA ---------------------------------}
@@ -22,7 +22,7 @@ inBounds x = (x >= minIndex)
 {-
     Churro state of (stack, data array), producing a string
 -}
-type ChurroState a = StateT ([Int], Map.Map Int Int) IO a
+type ChurroState a = StateT ([Integer], Map.Map Integer Integer) IO a
 
 {-
     Return type for churro parsing
@@ -48,7 +48,7 @@ stackError opName =
 {-
     Print a data error
 -}
-dataError :: Int -> ChurroState ChurroReturn
+dataError :: Integer -> ChurroState ChurroReturn
 dataError location =
     do{ liftIO $ putStrLn ("Data error: memory location "
                            ++ (show location)
@@ -59,7 +59,7 @@ dataError location =
 {-
     Push a number
 -}
-push :: Int -> ChurroState ChurroReturn
+push :: Integer -> ChurroState ChurroReturn
 push n =
     do{ (stack, array) <- get
       ; put (n:stack, array)
@@ -249,7 +249,7 @@ printChar peek =
       ; case stack of
             a:xs -> do{ let newStack = if peek then stack else xs
                       ; put (newStack, array)
-                      ; liftIO $ putChar (chr a)
+                      ; liftIO $ putChar $ chr $ fromInteger a
                       ; return Continue
                       }
             
@@ -263,7 +263,8 @@ read :: ChurroState ChurroReturn
 read =
     do{ (stack, array) <- get
       ; c <- liftIO $ getChar
-      ; put ((ord c):stack, array)
+      ; let charInteger = toInteger $ ord c;
+      ; put (charInteger:stack, array)
       ; return Continue
       }
       

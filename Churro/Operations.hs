@@ -7,7 +7,7 @@ module Churro.Operations
     Bools specifcy whether to peek (where appropriate)
 -}
 data ChurroOp =
-      Push Int
+      Push Integer
     | Pop Bool
     | Add Bool
     | Sub Bool
