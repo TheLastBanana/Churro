@@ -177,7 +177,7 @@ store peek =
     do{ (stack, array) <- get
       ; case stack of
             a:b:xs ->
-                if inBounds b
+                if inBounds a
                 then
                     do{ let newStack = if peek then stack else xs
                       ; let newArray = Map.insert a b array
