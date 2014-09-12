@@ -1,5 +1,5 @@
 module Churro.Interpreter
-    ( interpretAndParse,
+    ( parseAndInterpret,
       interpret
     ) where
 
@@ -304,8 +304,8 @@ interpret _ =
 {-
     Parse and interpret Churro code
 -}
-interpretAndParse :: String -> String -> IO ()
-interpretAndParse input name =
+parseAndInterpret :: String -> String -> IO ()
+parseAndInterpret input name =
     do{ let ops = parseChurro input name
       ; case ops of
             Right ops -> evalStateT (interpret_ ops) ([], Map.empty)

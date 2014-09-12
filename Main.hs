@@ -12,7 +12,7 @@ main =
             x:xs ->
                 do{ handle <- openFile x ReadMode
                   ; code <- hGetContents handle
-                  ; interpretAndParse code x
+                  ; parseAndInterpret code x
                   }
             
             _    ->
