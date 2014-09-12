@@ -1,6 +1,6 @@
 module Churro.Parser
-    ( parseChurro
-      
+    ( parseChurro,
+      Facing (..)
     ) where
 
 import Churro.Operations
