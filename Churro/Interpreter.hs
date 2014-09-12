@@ -222,7 +222,7 @@ printInt peek =
       ; case stack of
             a:xs -> do{ let newStack = if peek then stack else xs
                       ; put (newStack, array)
-                      ; liftIO $ print a
+                      ; liftIO $ putStr $ show a
                       ; return Continue
                       }
             
