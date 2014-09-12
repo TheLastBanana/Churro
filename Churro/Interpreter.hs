@@ -133,19 +133,8 @@ startLoop ops peekA peekB =
                     -- Start loop
                     else do{ ret <- interpret ops
                            ; case ret of
-                                 -- End of loop
-                                 Complete -> 
-                                     do{ ret <- endLoop peekB
-                                       ; case ret of
-                                             -- No error; continue loop
-                                             Continue -> startLoop ops True peekB
-                                        
-                                             -- No error; stop loop
-                                             Complete -> return Continue
-                                            
-                                             -- Stop everything
-                                             Abort -> return Abort
-                                        }
+                                 -- Continue loop with second peek value
+                                 Complete -> startLoop ops peekB peekB
                                  
                                  -- Stop everything
                                  Abort -> return Abort
