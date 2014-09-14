@@ -50,19 +50,22 @@ data. They operate on values in the stack.
 
 The functions are:
 
-| Churro            | Operation                                                        |
-| ----------------- | ---------------------------------------------------------------- |
-| `{{o}`            | pop A; discard A                                                 |
-| `{={o}`           | pop A, B; push (B + A)                                           |
-| `{=={o}`          | pop A, B; push (B - A)                                           |
-| `{==={o}`         | pop A; if A = 0, jump to churro after next occurence of {===={o} |
-| `{===={o}`        | pop A; if A != 0, jump to churro after last occurence of {==={o} |
-| `{====={o}`       | pop A, B; store B in memory location A                           |
-| `{======{o}`      | pop A; push the value in memory location A to stack              |
-| `{======={o}`     | pop A; print A as an integer                                     |
-| `{========{o}`    | pop A; print A as an ASCII character                             |
-| `{========={o}`   | read a single character from stdin and push it to the stack      |
-| `{=========={o}`  | exit the program                                                 |
+| Churro            | Operation                                                            |
+| ----------------- | -------------------------------------------------------------------- |
+| `{{o}`            | pop A; discard A                                                     |
+| `{={o}`           | pop A, B; push (B + A)                                               |
+| `{=={o}`          | pop A, B; push (B - A)                                               |
+| `{==={o}`         | pop A; if A = 0, jump to churro after matching occurence of {===={o} |
+| `{===={o}`        | pop A; if A != 0, jump to churro after matching occurence of {==={o} |
+| `{====={o}`       | pop A, B; store B in memory location A                               |
+| `{======{o}`      | pop A; push the value in memory location A to stack                  |
+| `{======={o}`     | pop A; print A as an integer                                         |
+| `{========{o}`    | pop A; print A as an ASCII character                                 |
+| `{========={o}`   | read a single character from stdin and push it to the stack          |
+| `{=========={o}`  | exit the program                                                     |
+
+The `{==={o}` and `{===={o}` operators are matched much like brackets in other
+programming languages, so they can be nested.
 
 Filled operator churros have the same behaviour as unfilled churros, but instead
 of popping values on the stack, they peek them.
