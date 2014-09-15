@@ -83,7 +83,7 @@ In order to maintain the purity of the program's churro makeup, minimal (or no)
 comments are recommended. Of course, this may make code more difficult to read,
 so it is acceptable to distribute a "dirty" version of the code with comments
 and extra whitespace so long as a "pure" version with minimal whitespace is also
-included.
+included. A program is provided which will purify dirty Churro code for you.
 
 # Interpreter
 
@@ -103,3 +103,10 @@ in this directory. You can then run
 
 to execute a Churro program, such as one of the ones contained in the Samples
 directory.
+
+Also included is the `purify` program, which can be run with
+
+`purify <filename>.ch`
+
+and will output pure Churro code (i.e. 80 characters per line, 1 space between
+churros and no comments).
